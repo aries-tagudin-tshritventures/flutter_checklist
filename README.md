@@ -1,39 +1,79 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# flutter_checklist
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
+![Pub Version](https://img.shields.io/pub/v/flutter_checklist)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
+A widget to display a checklist.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+<img alt="Screen recording of the example app" src="docs/screen_recordings/screen_recording.gif" style="width: 100%; max-width: 256px;">
+
+## Installing
+
+See the [installing instructions](https://pub.dev/packages/flutter_checklist/install).
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Display a checklist
+- Toggle items and edit their text
+- Reorder items
+- Add new items (either after the submitted one or at the end)
+- Remove items
+- Make the checklist read only
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+### ChecklistLine
+
+The `ChecklistLine` type is a [record](https://dart.dev/language/records) that represents a line (an item, an entry) of the checklist. It contains the text of that line and whether it is toggled.
+
+A list of `ChecklistLine` represents a checklist with all its lines. The order of the list directly determines the order of the items in the checklist.
+
+### Checklist
+
+The `Checklist` widget displays your list of `ChecklistLine` as a checklist.
+
+It requires as arguments the list of `ChecklistLine` to display, and a callback function to execute when any modification is performed on that list with the new list of `ChecklistLine`.
+
+A checklist can be made read only by setting the `enabled` parameter to `false`, which disables any modification to the checklist lines as well as there reordering.
 
 ```dart
-const like = 'sample';
+// The list of five ChecklistLine to display with their text and whether they are toggled
+final lines = List.generate(
+  5,
+  (index) => (text: 'Line ${index + 1}', toggled: false),
+);
+
+// The function to execute when the checklist is modified, with the new list of ChecklistLine
+void onChanged(List<ChecklistLine> lines) {
+  log(lines.toString());
+}
+
+// The checklist widget
+Checklist(
+  lines: checklistLines,
+  onChanged: onChanged,
+);
 ```
 
-## Additional information
+### Localization
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+This package supports localization. To enable it in your app, add the localizations delegates to your `MaterialApp`:
+
+```dart
+MaterialApp(
+  localizationsDelegates: [
+    ...ChecklistLocalizations.localizationsDelegates,
+    // Any other localizations delegates, from your app or other packages
+  ],
+);
+```
+
+The following localizations are currently supported (ordered alphabetically):
+
+- English
+- French
+
+To add support for a new localization or improve an existing one, please open an [issue](https://github.com/maelchiotti/flutter_checklist/issues).
+
+## Example
+
+See the [example app](https://pub.dev/packages/flutter_checklist/example).

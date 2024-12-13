@@ -1,39 +1,57 @@
-import 'package:checklist/checklist.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_checklist/checklist.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Display the application behind the system's notifications bar and navigation bar
+  // See https://github.com/flutter/flutter/issues/40974
+  // See https://github.com/flutter/flutter/issues/34678
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
+
+  runApp(MyApp());
 }
 
-/// Example app.
-class MyApp extends StatefulWidget {
-  /// Example app.
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+  final lines = List.generate(
+    5,
+    (index) => (text: 'Line ${index + 1}', toggled: false),
+  );
 
-class _MyAppState extends State<MyApp> {
-  void onChange(List<ChecklistValue> checklistValues) {
-    print(checklistValues);
+  void onChanged(List<ChecklistLine> lines) {
+    log(lines.toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ChecklistValue> checklistLines = List.generate(
-        10, (i) => (text: 'Line dddddddddddddddddddddddddddddddddddddddddddddddddddd a $i', toggled: false));
-
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      locale: Locale('en'),
+      localizationsDelegates: [
+        ...ChecklistLocalizations.localizationsDelegates,
+      ],
+      supportedLocales: [
+        ...ChecklistLocalizations.supportedLocales,
+      ],
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('checklist example app'),
+          title: const Text('flutter_checklist example'),
         ),
         body: Builder(
           builder: (context) {
             return Checklist(
-              lines: checklistLines,
-              onChange: onChange,
+              lines: lines,
+              onChanged: onChanged,
             );
           },
         ),

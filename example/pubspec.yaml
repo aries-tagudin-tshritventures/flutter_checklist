@@ -1,5 +1,5 @@
-name: checklist_example
-description: "An example on how to use the checklist package."
+name: flutter_checklist_example
+description: "An example on how to use the flutter_checklist package."
 
 version: 1.0.0+1
 publish_to: none
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  checklist:
+  flutter_checklist:
     path: ../
 
 dev_dependencies:

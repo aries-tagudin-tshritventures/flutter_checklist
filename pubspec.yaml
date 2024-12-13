@@ -1,8 +1,8 @@
-name: checklist
-description: A widget to display a checklist.
+name: flutter_checklist
+description: "A widget to display a checklist"
 
-repository: https://github.com/maelchiotti/checklist
-issue_tracker: https://github.com/maelchiotti/checklist/issues
+repository: https://github.com/maelchiotti/flutter_checklist
+issue_tracker: https://github.com/maelchiotti/flutter_checklist/issues
 
 version: 1.0.0
 
@@ -11,13 +11,14 @@ environment:
 
 dependencies:
   animated_reorderable_list: ^1.1.2
-  collection: ^1.18.0
-  equatable: ^2.0.7
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  gap: ^3.0.1
 
 dev_dependencies:
   flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true

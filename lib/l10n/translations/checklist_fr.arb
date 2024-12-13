@@ -1,0 +1,6 @@
+{
+  "new_entry": "Nouvelle entrée",
+  "@new_entry": {
+    "description": "Label of the new entry button at the bottom of the checklist."
+  }
+}
