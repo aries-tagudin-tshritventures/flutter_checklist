@@ -4,7 +4,7 @@
 
 A widget to display a checklist.
 
-<img alt="Screen recording of the example app" src="docs/screen_recordings/screen_recording.gif" style="width: 100%; max-width: 256px;">
+<img alt="Screen recording of the example app" src="doc/screen_recordings/screen_recording.gif" style="width: 100%; max-width: 256px;">
 
 ## Installing
 
