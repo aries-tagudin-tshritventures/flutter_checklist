@@ -4,7 +4,7 @@
 
 A widget to display a checklist.
 
-![Screen recording of the example app](doc/screen_recordings/screen_recording.gif)
+![Screen recording of the example app](doc/screen_recordings/screen_recording_cropped.gif)
 
 ## Installing
 
