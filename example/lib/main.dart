@@ -1,22 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_checklist/checklist.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Display the application behind the system's notifications bar and navigation bar
-  // See https://github.com/flutter/flutter/issues/40974
-  // See https://github.com/flutter/flutter/issues/34678
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-    ),
-  );
-
   runApp(MyApp());
 }
 
