@@ -1,3 +1,9 @@
+# Dart
+.PHONY: format
+
+format:
+	dart format .
+
 # Publishing
 .PHONY: dry_run publish
 
