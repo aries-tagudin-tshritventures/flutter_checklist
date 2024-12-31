@@ -142,8 +142,10 @@ class _ChecklistState extends State<Checklist> {
                     onRemove: removeItem,
                   );
                 },
+                isSameItem: (Key key, Key otherKey) => key == otherKey,
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
+                dragStartDelay: Duration(milliseconds: 250),
                 onReorderStart: onReorderStart,
                 onReorder: onReorder,
                 onReorderEnd: onReorderEnd,

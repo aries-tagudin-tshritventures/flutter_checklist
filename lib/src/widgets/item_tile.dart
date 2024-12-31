@@ -109,16 +109,10 @@ class _ItemTileState extends State<ItemTile> {
 
               return ListTile(
                 tileColor: tileColor,
-                leading: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.enabled) Icon(Icons.drag_indicator),
-                    Checkbox(
-                      value: toggled,
-                      visualDensity: VisualDensity.compact,
-                      onChanged: widget.enabled ? onToggled : null,
-                    ),
-                  ],
+                leading: Checkbox(
+                  value: toggled,
+                  visualDensity: VisualDensity.compact,
+                  onChanged: widget.enabled ? onToggled : null,
                 ),
                 title: ValueListenableBuilder(
                     valueListenable: addedItemKeyNotifier,
@@ -135,12 +129,17 @@ class _ItemTileState extends State<ItemTile> {
                         onSubmitted: onSubmitted,
                       );
                     }),
-                trailing: hasFocus && widget.enabled
-                    ? IconButton(
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (hasFocus && widget.enabled)
+                      IconButton(
                         icon: Icon(Icons.close),
                         onPressed: onRemove,
-                      )
-                    : null,
+                      ),
+                    if (widget.enabled) Icon(Icons.drag_indicator)
+                  ],
+                ),
                 visualDensity: VisualDensity.compact,
                 contentPadding: EdgeInsets.only(left: 16, right: 8),
               );

@@ -26,7 +26,7 @@ class NewItemButton extends StatelessWidget {
       ),
       onTap: onTap,
       visualDensity: VisualDensity.compact,
-      contentPadding: EdgeInsets.only(left: 48, right: 16),
+      contentPadding: EdgeInsets.only(left: 24, right: 16),
     );
   }
 }
