@@ -33,7 +33,7 @@ The `Checklist` widget displays your list of `ChecklistLine` as a checklist.
 
 It requires as arguments the list of `ChecklistLine` to display, and a callback function to execute when any modification is performed on that list with the new list of `ChecklistLine`.
 
-A checklist can be made read only by setting the `enabled` parameter to `false`, which disables any modification to the checklist lines as well as there reordering.
+A checklist can be made read only by setting the `enabled` parameter to `false`, which disables any modification to the checklist lines as well as their reordering.
 
 ```dart
 // The list of five ChecklistLine to display with their text and whether they are toggled
