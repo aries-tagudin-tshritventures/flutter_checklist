@@ -61,7 +61,7 @@ This package supports localization. To enable it in your app, add the localizati
 ```dart
 MaterialApp(
   localizationsDelegates: [
-    ...ChecklistLocalizations.localizationsDelegates,
+    ChecklistLocalizations.delegate,
     // Any other localizations delegates, from your app or other packages
   ],
 );

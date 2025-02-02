@@ -96,9 +96,9 @@ class _ChecklistState extends State<Checklist> {
     widget.onChanged(values);
   }
 
-  void addItem(Key key) {
+  void addItem(Key? key) {
     setState(() {
-      final index = keys.indexWhere((k) => k == key) + 1;
+      final index = key != null ? keys.indexWhere((k) => k == key) + 1 : 0;
       final newKey = UniqueKey();
       final value = (text: '', toggled: false);
 
@@ -153,9 +153,8 @@ class _ChecklistState extends State<Checklist> {
                 removeDuration: duration,
               ),
               NewItemButton(
-                onTap: () => addItem(keys.last),
+                onTap: () => addItem(keys.lastOrNull),
               ),
-              //Spacer(),
             ],
           )
         : ListView.builder(

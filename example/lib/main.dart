@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final lines = List.generate(
-    5,
+    0,
     (index) => (text: 'Line ${index + 1}', toggled: false),
   );
 
