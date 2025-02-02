@@ -10,6 +10,7 @@ class ItemTile extends StatefulWidget {
     super.key,
     required this.value,
     this.enabled = true,
+    this.checkedReadOnly = false,
     this.onToggled,
     this.onChanged,
     this.onSubmitted,
@@ -26,6 +27,9 @@ class ItemTile extends StatefulWidget {
   ///
   /// Defaults to `true`.
   final bool enabled;
+
+  /// Whether this item should be read only if checked.
+  final bool checkedReadOnly;
 
   /// Called when the checkbox of this item is toggled.
   final void Function(Key, bool)? onToggled;
@@ -120,7 +124,7 @@ class _ItemTileState extends State<ItemTile> {
                     builder: (context, addedItemKey, child) {
                       return TextField(
                         controller: textController,
-                        readOnly: toggled || !widget.enabled,
+                        readOnly: !widget.enabled || (toggled && widget.checkedReadOnly),
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
                         decoration: InputDecoration.collapsed(hintText: ''),
                         textInputAction: TextInputAction.newline,

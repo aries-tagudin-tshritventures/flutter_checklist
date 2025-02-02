@@ -18,6 +18,7 @@ class Checklist extends StatefulWidget {
     super.key,
     required this.lines,
     this.enabled = true,
+    this.checkedReadOnly = false,
     required this.onChanged,
   });
 
@@ -28,6 +29,9 @@ class Checklist extends StatefulWidget {
   ///
   /// Defaults to `true`.
   final bool enabled;
+
+  /// Whether the checked items should be read only.
+  final bool checkedReadOnly;
 
   /// Called when a line in the checklist is added, removed, toggled or its text is changed with the new list of lines.
   final void Function(List<ChecklistLine>) onChanged;
@@ -136,6 +140,7 @@ class _ChecklistState extends State<Checklist> {
                   return ItemTile(
                     key: keys[index],
                     value: values[index],
+                    checkedReadOnly: widget.checkedReadOnly,
                     onChanged: updateText,
                     onToggled: updateToggled,
                     onSubmitted: addItem,
