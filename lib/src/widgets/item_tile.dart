@@ -105,7 +105,8 @@ class _ItemTileState extends State<ItemTile> {
         child: ValueListenableBuilder(
             valueListenable: draggedItemKeyNotifier,
             builder: (context, draggedItemKey, child) {
-              final tileColor = draggedItemKey == widget.key ? Theme.of(context).colorScheme.surfaceContainer : null;
+              final tileColor =
+                  draggedItemKey == widget.key ? Theme.of(context).colorScheme.surfaceContainerHigh : null;
 
               return ListTile(
                 tileColor: tileColor,
