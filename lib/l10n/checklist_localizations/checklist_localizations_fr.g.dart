@@ -7,5 +7,8 @@ class ChecklistLocalizationsFr extends ChecklistLocalizations {
   ChecklistLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get new_entry => 'Nouvelle entrée';
+  String get button_new_entry => 'Nouvelle entrée';
+
+  @override
+  String get hint_entry => 'Entrée';
 }

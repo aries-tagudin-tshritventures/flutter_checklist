@@ -1,6 +1,10 @@
 {
-  "new_entry": "Nouvelle entrée",
-  "@new_entry": {
+  "button_new_entry": "Nouvelle entrée",
+  "@button_new_entry": {
     "description": "Label of the new entry button at the bottom of the checklist."
+  },
+  "hint_entry": "Entrée",
+  "@hint_entry": {
+    "description": "Hint text shown on empty checklist items."
   }
 }

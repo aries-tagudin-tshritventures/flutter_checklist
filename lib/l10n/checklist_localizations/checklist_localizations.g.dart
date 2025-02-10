@@ -99,11 +99,17 @@ abstract class ChecklistLocalizations {
     Locale('fr')
   ];
 
-  /// Label of the new entry button at the bottom of the checklist.
+  /// New entry button at the bottom of the checklist.
   ///
   /// In en, this message translates to:
   /// **'New entry'**
-  String get new_entry;
+  String get button_new_entry;
+
+  /// Hint text shown on empty checklist items.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry'**
+  String get hint_entry;
 }
 
 class _ChecklistLocalizationsDelegate

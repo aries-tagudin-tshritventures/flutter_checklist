@@ -16,7 +16,12 @@ class ItemTile extends StatefulWidget {
     this.onSubmitted,
     this.onRemove,
   }) : assert(
-          (enabled && onToggled != null && onChanged != null && onSubmitted != null && onRemove != null) || !enabled,
+          (enabled &&
+                  onToggled != null &&
+                  onChanged != null &&
+                  onSubmitted != null &&
+                  onRemove != null) ||
+              !enabled,
           'If the item is enabled, all callbacks must not be null',
         );
 
@@ -109,8 +114,9 @@ class _ItemTileState extends State<ItemTile> {
         child: ValueListenableBuilder(
             valueListenable: draggedItemKeyNotifier,
             builder: (context, draggedItemKey, child) {
-              final tileColor =
-                  draggedItemKey == widget.key ? Theme.of(context).colorScheme.surfaceContainerHigh : null;
+              final tileColor = draggedItemKey == widget.key
+                  ? Theme.of(context).colorScheme.surfaceContainerHigh
+                  : null;
 
               return ListTile(
                 tileColor: tileColor,
@@ -124,9 +130,14 @@ class _ItemTileState extends State<ItemTile> {
                     builder: (context, addedItemKey, child) {
                       return TextField(
                         controller: textController,
-                        readOnly: !widget.enabled || (toggled && widget.checkedReadOnly),
+                        readOnly: !widget.enabled ||
+                            (toggled && widget.checkedReadOnly),
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
-                        decoration: InputDecoration.collapsed(hintText: ''),
+                        decoration: InputDecoration.collapsed(
+                          hintText: widget.enabled
+                              ? ChecklistLocalizations.of(context).hint_entry
+                              : '',
+                        ),
                         textInputAction: TextInputAction.newline,
                         autofocus: addedItemKey == widget.key,
                         maxLines: 1,

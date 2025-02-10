@@ -19,7 +19,7 @@ class NewItemButton extends StatelessWidget {
       title: Padding(
         padding: EdgeInsets.only(left: 8),
         child: Text(
-          ChecklistLocalizations.of(context).new_entry,
+          ChecklistLocalizations.of(context).button_new_entry,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

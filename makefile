@@ -17,4 +17,4 @@ publish:
 .PHONY: gen_l10n
 
 gen_l10n:
-	flutter gen_l10n
+	flutter gen-l10n
