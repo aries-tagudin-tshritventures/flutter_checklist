@@ -138,9 +138,7 @@ class _ItemTileState extends State<ItemTile> {
                             (toggled && widget.checkedReadOnly),
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
                         decoration: InputDecoration.collapsed(
-                          hintText: widget.enabled
-                              ? widget.localizations.hint_entry
-                              : '',
+                          hintText: widget.localizations.hint_entry,
                         ),
                         textInputAction: TextInputAction.newline,
                         autofocus: addedItemKey == widget.key,
