@@ -7,10 +7,14 @@ class NewItemButton extends StatelessWidget {
   const NewItemButton({
     super.key,
     required this.onTap,
+    required this.localizations,
   });
 
   /// Called when the button is tapped.
   final VoidCallback onTap;
+
+  /// Custom implementation of [ChecklistLocalizations] to replace the default ones or provide unavailable ones.
+  final ChecklistLocalizations localizations;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class NewItemButton extends StatelessWidget {
       title: Padding(
         padding: EdgeInsets.only(left: 8),
         child: Text(
-          ChecklistLocalizations.of(context).button_new_entry,
+          localizations.button_new_entry,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

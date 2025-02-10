@@ -11,6 +11,7 @@ class ItemTile extends StatefulWidget {
     required this.value,
     this.enabled = true,
     this.checkedReadOnly = false,
+    required this.localizations,
     this.onToggled,
     this.onChanged,
     this.onSubmitted,
@@ -35,6 +36,9 @@ class ItemTile extends StatefulWidget {
 
   /// Whether this item should be read only if checked.
   final bool checkedReadOnly;
+
+  /// Custom implementation of [ChecklistLocalizations] to replace the default ones or provide unavailable ones.
+  final ChecklistLocalizations localizations;
 
   /// Called when the checkbox of this item is toggled.
   final void Function(Key, bool)? onToggled;
@@ -135,7 +139,7 @@ class _ItemTileState extends State<ItemTile> {
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
                         decoration: InputDecoration.collapsed(
                           hintText: widget.enabled
-                              ? ChecklistLocalizations.of(context).hint_entry
+                              ? widget.localizations.hint_entry
                               : '',
                         ),
                         textInputAction: TextInputAction.newline,

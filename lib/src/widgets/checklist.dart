@@ -20,6 +20,7 @@ class Checklist extends StatefulWidget {
     this.enabled = true,
     this.checkedReadOnly = false,
     required this.onChanged,
+    this.localizations,
   });
 
   /// The list of entries to display in the checklist, with a text and whether they are toggled.
@@ -32,6 +33,12 @@ class Checklist extends StatefulWidget {
 
   /// Whether the checked items should be read only.
   final bool checkedReadOnly;
+
+  /// Custom implementation of [ChecklistLocalizations] to replace the default ones or provide unavailable ones.
+  ///
+  /// For an example on how to implement this class, look at any generated implementation for the already supported
+  /// languages: <https://github.com/maelchiotti/flutter_checklist/tree/main/lib/l10n/checklist_localizations>.
+  final ChecklistLocalizations? localizations;
 
   /// Called when a line in the checklist is added, removed, toggled or its text is changed with the new list of lines.
   final void Function(List<ChecklistLine>) onChanged;
@@ -145,6 +152,8 @@ class _ChecklistState extends State<Checklist> {
                     onToggled: updateToggled,
                     onSubmitted: addItem,
                     onRemove: removeItem,
+                    localizations: widget.localizations ??
+                        ChecklistLocalizations.of(context),
                   );
                 },
                 isSameItem: (Key key, Key otherKey) => key == otherKey,
@@ -159,6 +168,8 @@ class _ChecklistState extends State<Checklist> {
               ),
               NewItemButton(
                 onTap: () => addItem(keys.lastOrNull),
+                localizations:
+                    widget.localizations ?? ChecklistLocalizations.of(context),
               ),
             ],
           )
@@ -169,6 +180,8 @@ class _ChecklistState extends State<Checklist> {
                 key: keys[index],
                 value: values[index],
                 enabled: false,
+                localizations:
+                    widget.localizations ?? ChecklistLocalizations.of(context),
               );
             },
           );

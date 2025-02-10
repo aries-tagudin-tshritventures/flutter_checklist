@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
           builder: (context) {
             return Checklist(
               lines: lines,
-              enabled: false,
               onChanged: onChanged,
             );
           },

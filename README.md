@@ -49,12 +49,14 @@ void onChanged(List<ChecklistLine> lines) {
 
 // The checklist widget
 Checklist(
-  lines: checklistLines,
+  lines: lines,
   onChanged: onChanged,
 );
 ```
 
 ### Localization
+
+#### Embedded
 
 This package supports localization. To enable it in your app, add the localizations delegates to your `MaterialApp`:
 
@@ -73,6 +75,18 @@ The following localizations are currently supported (ordered alphabetically):
 - French
 
 To add support for a new localization or improve an existing one, please open an [issue](https://github.com/maelchiotti/flutter_checklist/issues).
+
+#### Custom
+
+To provide your own localizations (to replace the embedded ones are provide missing ones), implement the `ChecklistLocalizations` class (for examples, look at the [generated ones](https://github.com/maelchiotti/flutter_checklist/tree/main/lib/l10n/checklist_localizations)) and pass it to the `localizations` parameter:
+
+```dart
+Checklist(
+  lines: lines,
+  onChanged: onChanged,
+  localizations: CustomChecklistLocalizations(),
+)
+```
 
 ## Example
 
