@@ -10,15 +10,25 @@ import 'package:flutter_checklist/src/widgets/new_item_button.dart';
 class Checklist extends StatefulWidget {
   /// A checklist with a list of [lines].
   ///
-  /// The [lines] correspond to an entry in the checklist, with a text and whether they are toggled.
+  /// The [lines] correspond to the entries in the checklist, with a text and whether they are toggled.
   ///
   /// On each change in the checklist (a line is added, removed, toggled or its text is changed),
   /// the [onChanged] callback is fired with the new list of lines.
+  ///
+  /// Set [enabled] to false to disable editing and toggling of the lines.
+  ///
+  /// Set [checkedReadOnly] to make checked lines read only.
+  ///
+  /// Set [autofocusFirstLine] to automatically focus the first line
+  /// (useful when creating the checklist for the first time with an empty line).
+  ///
+  /// Override [localizations] to provide your own.
   const Checklist({
     super.key,
     required this.lines,
     this.enabled = true,
     this.checkedReadOnly = false,
+    this.autofocusFirstLine = false,
     required this.onChanged,
     this.localizations,
   });
@@ -33,6 +43,9 @@ class Checklist extends StatefulWidget {
 
   /// Whether the checked items should be read only.
   final bool checkedReadOnly;
+
+  /// Whether to automatically focus the first line when the checklist is created.
+  final bool autofocusFirstLine;
 
   /// Custom implementation of [ChecklistLocalizations] to replace the default ones or provide unavailable ones.
   ///
@@ -148,6 +161,7 @@ class _ChecklistState extends State<Checklist> {
                     key: keys[index],
                     value: values[index],
                     checkedReadOnly: widget.checkedReadOnly,
+                    autofocus: widget.autofocusFirstLine && index == 0,
                     onChanged: updateText,
                     onToggled: updateToggled,
                     onSubmitted: addItem,

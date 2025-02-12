@@ -11,6 +11,7 @@ class ItemTile extends StatefulWidget {
     required this.value,
     this.enabled = true,
     this.checkedReadOnly = false,
+    this.autofocus = false,
     required this.localizations,
     this.onToggled,
     this.onChanged,
@@ -36,6 +37,9 @@ class ItemTile extends StatefulWidget {
 
   /// Whether this item should be read only if checked.
   final bool checkedReadOnly;
+
+  /// Whether to automatically focus this item.
+  final bool autofocus;
 
   /// Custom implementation of [ChecklistLocalizations] to replace the default ones or provide unavailable ones.
   final ChecklistLocalizations localizations;
@@ -132,17 +136,26 @@ class _ItemTileState extends State<ItemTile> {
                 title: ValueListenableBuilder(
                     valueListenable: addedItemKeyNotifier,
                     builder: (context, addedItemKey, child) {
+                      // Make the text field read only if the checklist widget is disabled,
+                      // or if the item is checked and the checklist widget is set to make checked items read only
+                      final readonly = !widget.enabled ||
+                          (toggled && widget.checkedReadOnly);
+
+                      // Automatically focus the text field if the checklist widget is set to autofocus the first line,
+                      // or if the item's key corresponds to the last added item
+                      final autofocus =
+                          widget.autofocus || addedItemKey == widget.key;
+
                       return TextField(
                         controller: textController,
-                        readOnly: !widget.enabled ||
-                            (toggled && widget.checkedReadOnly),
+                        readOnly: readonly,
+                        autofocus: autofocus,
+                        textInputAction: TextInputAction.newline,
+                        maxLines: 1,
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
                         decoration: InputDecoration.collapsed(
                           hintText: widget.localizations.hint_entry,
                         ),
-                        textInputAction: TextInputAction.newline,
-                        autofocus: addedItemKey == widget.key,
-                        maxLines: 1,
                         onChanged: onChanged,
                         onSubmitted: onSubmitted,
                       );
