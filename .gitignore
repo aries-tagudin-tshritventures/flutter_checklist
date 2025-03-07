@@ -30,3 +30,5 @@ build/
 
 # l10n
 lib/l10n/untranslated.txt
+
+example/android/app/.cxx
