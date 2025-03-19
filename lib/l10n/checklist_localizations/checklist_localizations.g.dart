@@ -69,7 +69,9 @@ abstract class ChecklistLocalizations {
 
   static ChecklistLocalizations of(BuildContext context) {
     return Localizations.of<ChecklistLocalizations>(
-        context, ChecklistLocalizations)!;
+      context,
+      ChecklistLocalizations,
+    )!;
   }
 
   static const LocalizationsDelegate<ChecklistLocalizations> delegate =
@@ -96,7 +98,7 @@ abstract class ChecklistLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('fr')
+    Locale('fr'),
   ];
 
   /// New entry button at the bottom of the checklist.
@@ -119,7 +121,8 @@ class _ChecklistLocalizationsDelegate
   @override
   Future<ChecklistLocalizations> load(Locale locale) {
     return SynchronousFuture<ChecklistLocalizations>(
-        lookupChecklistLocalizations(locale));
+      lookupChecklistLocalizations(locale),
+    );
   }
 
   @override
@@ -140,8 +143,9 @@ ChecklistLocalizations lookupChecklistLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'ChecklistLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'ChecklistLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

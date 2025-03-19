@@ -151,6 +151,7 @@ class _ItemTileState extends State<ItemTile> {
                         readOnly: readonly,
                         autofocus: autofocus,
                         textInputAction: TextInputAction.newline,
+                        textCapitalization: TextCapitalization.sentences,
                         maxLines: 1,
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
                         decoration: InputDecoration.collapsed(
