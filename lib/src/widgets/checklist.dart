@@ -2,6 +2,7 @@ import 'package:animated_reorderable_list/animated_reorderable_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_checklist/checklist.dart';
+import 'package:flutter_checklist/l10n/checklist_localizations/checklist_localizations_en.g.dart';
 import 'package:flutter_checklist/src/utils/constants.dart';
 import 'package:flutter_checklist/src/widgets/item_tile.dart';
 import 'package:flutter_checklist/src/widgets/new_item_button.dart';
@@ -151,6 +152,11 @@ class _ChecklistState extends State<Checklist> {
     // Changing the duration is buggy in debug mode
     final duration = kReleaseMode ? Duration(milliseconds: 150) : null;
 
+    // Use the custom user localizations, or else those for the current locale, or else those in english
+    final localizations = widget.localizations ??
+        ChecklistLocalizations.of(context) ??
+        ChecklistLocalizationsEn();
+
     return widget.enabled
         ? ListView(
             children: [
@@ -166,8 +172,7 @@ class _ChecklistState extends State<Checklist> {
                     onToggled: updateToggled,
                     onSubmitted: addItem,
                     onRemove: removeItem,
-                    localizations: widget.localizations ??
-                        ChecklistLocalizations.of(context),
+                    localizations: localizations,
                   );
                 },
                 isSameItem: (Key key, Key otherKey) => key == otherKey,
@@ -182,8 +187,7 @@ class _ChecklistState extends State<Checklist> {
               ),
               NewItemButton(
                 onTap: () => addItem(keys.lastOrNull),
-                localizations:
-                    widget.localizations ?? ChecklistLocalizations.of(context),
+                localizations: localizations,
               ),
             ],
           )
@@ -194,8 +198,7 @@ class _ChecklistState extends State<Checklist> {
                 key: keys[index],
                 value: values[index],
                 enabled: false,
-                localizations:
-                    widget.localizations ?? ChecklistLocalizations.of(context),
+                localizations: localizations,
               );
             },
           );
