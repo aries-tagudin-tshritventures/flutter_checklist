@@ -5,6 +5,7 @@ import 'package:flutter_checklist/checklist.dart';
 import 'package:flutter_checklist/l10n/checklist_localizations/checklist_localizations_en.g.dart';
 import 'package:flutter_checklist/src/utils/constants.dart';
 import 'package:flutter_checklist/src/widgets/item_tile.dart';
+import 'package:flutter_checklist/src/widgets/keep_keyboard_on_screen.dart';
 import 'package:flutter_checklist/src/widgets/new_item_button.dart';
 
 /// Checklist widget.
@@ -56,6 +57,9 @@ class Checklist extends StatefulWidget {
 
   /// Called when a line in the checklist is added, removed, toggled or its text is changed with the new list of lines.
   final void Function(List<ChecklistLine>) onChanged;
+
+  /// Focus node of the placeholder `TextField` that keeps the keyboard on screen when adding a new item.
+  static final keepKeyboardFocusNode = FocusNode(debugLabel: 'Keep keyboard on screen');
 
   @override
   State<Checklist> createState() => _ChecklistState();
@@ -122,6 +126,8 @@ class _ChecklistState extends State<Checklist> {
   }
 
   void addItem(Key? key) {
+    Checklist.keepKeyboardFocusNode.requestFocus();
+
     setState(() {
       final index = key != null ? keys.indexWhere((k) => k == key) + 1 : 0;
       final newKey = UniqueKey();
@@ -153,13 +159,12 @@ class _ChecklistState extends State<Checklist> {
     final duration = kReleaseMode ? Duration(milliseconds: 150) : null;
 
     // Use the custom user localizations, or else those for the current locale, or else those in english
-    final localizations = widget.localizations ??
-        ChecklistLocalizations.of(context) ??
-        ChecklistLocalizationsEn();
+    final localizations = widget.localizations ?? ChecklistLocalizations.of(context) ?? ChecklistLocalizationsEn();
 
     return widget.enabled
         ? ListView(
             children: [
+              KeepKeyboardOnScreen(focusNode: Checklist.keepKeyboardFocusNode),
               AnimatedReorderableListView(
                 items: keys,
                 itemBuilder: (context, index) {
