@@ -31,6 +31,9 @@ class Checklist extends StatefulWidget {
     this.enabled = true,
     this.checkedReadOnly = false,
     this.autofocusFirstLine = false,
+    this.keyboardType = TextInputType.text,
+    this.textInputAction = TextInputAction.none,
+    this.textCapitalization = TextCapitalization.none,
     required this.onChanged,
     this.localizations,
   });
@@ -48,6 +51,15 @@ class Checklist extends StatefulWidget {
 
   /// Whether to automatically focus the first line when the checklist is created.
   final bool autofocusFirstLine;
+
+  /// The `TextInputType` of the checklist items `TextField`.
+  final TextInputType keyboardType;
+
+  /// The `TextInputAction` of the checklist items `TextField`.
+  final TextInputAction textInputAction;
+
+  /// The `TextCapitalization` of the checklist items `TextField`.
+  final TextCapitalization textCapitalization;
 
   /// Custom implementation of [ChecklistLocalizations] to replace the default ones or provide unavailable ones.
   ///
@@ -164,7 +176,12 @@ class _ChecklistState extends State<Checklist> {
     return widget.enabled
         ? ListView(
             children: [
-              KeepKeyboardOnScreen(focusNode: Checklist.keepKeyboardFocusNode),
+              KeepKeyboardOnScreen(
+                focusNode: Checklist.keepKeyboardFocusNode,
+                keyboardType: widget.keyboardType,
+                textInputAction: widget.textInputAction,
+                textCapitalization: widget.textCapitalization,
+              ),
               AnimatedReorderableListView(
                 items: keys,
                 itemBuilder: (context, index) {
