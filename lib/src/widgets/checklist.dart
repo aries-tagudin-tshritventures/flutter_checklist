@@ -8,6 +8,54 @@ import 'package:flutter_checklist/src/widgets/item_tile.dart';
 import 'package:flutter_checklist/src/widgets/keep_keyboard_on_screen.dart';
 import 'package:flutter_checklist/src/widgets/new_item_button.dart';
 
+/// Controller for a [Checklist] widget to perform imperative actions.
+class ChecklistController {
+  _ChecklistState? _state;
+
+  /// Whether this controller is currently attached to a [Checklist].
+  bool get isAttached => _state != null;
+
+  /// Current lines of the attached checklist.
+  /// Returns an unmodifiable copy. If not attached, returns an empty list.
+  List<ChecklistLine> get lines =>
+      List.unmodifiable(_state?.values ?? const <ChecklistLine>[]);
+
+  void _attach(_ChecklistState state) {
+    _state = state;
+  }
+
+  void _detach(_ChecklistState state) {
+    if (_state == state) {
+      _state = null;
+    }
+  }
+
+  /// Add a new item at [index]. If null, adds at the end.
+  /// Optionally set its initial [text] and [toggled] status.
+  void addItem({int? index, String text = '', bool toggled = false}) {
+    final state = _state;
+    if (state == null) return;
+    final targetIndex = index ?? state.values.length;
+    state._addItemAt(targetIndex, text: text, toggled: toggled);
+  }
+
+  /// Sort the checklist by status.
+  /// If [uncheckedFirst] is true, unchecked items are placed before checked ones.
+  void sortByStatus({bool uncheckedFirst = true}) {
+    final state = _state;
+    if (state == null) return;
+    state._sortByStatus(uncheckedFirst: uncheckedFirst);
+  }
+
+  /// Ensure any in-progress edits are saved and notify listeners.
+  /// This will unfocus any focused input and re-emit the current lines.
+  void saveUnsubmitted() {
+    final state = _state;
+    if (state == null) return;
+    state._saveUnsubmitted();
+  }
+}
+
 /// Checklist widget.
 class Checklist extends StatefulWidget {
   /// A checklist with a list of [lines].
@@ -36,6 +84,7 @@ class Checklist extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     required this.onChanged,
     this.localizations,
+    this.controller,
   });
 
   /// The list of entries to display in the checklist, with a text and whether they are toggled.
@@ -71,7 +120,11 @@ class Checklist extends StatefulWidget {
   final void Function(List<ChecklistLine>) onChanged;
 
   /// Focus node of the placeholder `TextField` that keeps the keyboard on screen when adding a new item.
-  static final keepKeyboardFocusNode = FocusNode(debugLabel: 'Keep keyboard on screen');
+  static final keepKeyboardFocusNode =
+      FocusNode(debugLabel: 'Keep keyboard on screen');
+
+  /// Optional controller to control this checklist imperatively.
+  final ChecklistController? controller;
 
   @override
   State<Checklist> createState() => _ChecklistState();
@@ -87,6 +140,8 @@ class _ChecklistState extends State<Checklist> {
 
     keys = List.generate(widget.lines.length, (_) => UniqueKey());
     values = List.from(widget.lines);
+
+    _maybeAttachController(widget.controller);
   }
 
   @override
@@ -95,6 +150,26 @@ class _ChecklistState extends State<Checklist> {
 
     draggedItemKeyNotifier.value = null;
     addedItemKeyNotifier.value = null;
+
+    _maybeDetachController(widget.controller);
+  }
+
+  @override
+  void didUpdateWidget(covariant Checklist oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.controller != widget.controller) {
+      _maybeDetachController(oldWidget.controller);
+      _maybeAttachController(widget.controller);
+    }
+  }
+
+  void _maybeAttachController(ChecklistController? controller) {
+    controller?._attach(this);
+  }
+
+  void _maybeDetachController(ChecklistController? controller) {
+    controller?._detach(this);
   }
 
   void onReorderStart(int index) {
@@ -154,6 +229,24 @@ class _ChecklistState extends State<Checklist> {
     widget.onChanged(values);
   }
 
+  // Controller API: add a new item at the given index with optional initial values.
+  void _addItemAt(int index, {String text = '', bool toggled = false}) {
+    final clampedIndex =
+        index < 0 ? 0 : (index > keys.length ? keys.length : index);
+
+    setState(() {
+      final newKey = UniqueKey();
+      final value = (text: text, toggled: toggled);
+
+      keys.insert(clampedIndex, newKey);
+      values.insert(clampedIndex, value);
+
+      addedItemKeyNotifier.value = newKey;
+    });
+
+    widget.onChanged(values);
+  }
+
   void removeItem(Key key) {
     setState(() {
       final index = keys.indexWhere((k) => k == key);
@@ -165,13 +258,50 @@ class _ChecklistState extends State<Checklist> {
     widget.onChanged(values);
   }
 
+  // Controller API: sort items by toggled status, preserving relative order (stable sort).
+  void _sortByStatus({bool uncheckedFirst = true}) {
+    setState(() {
+      final pairs = List.generate(
+          keys.length, (i) => (key: keys[i], value: values[i], index: i));
+      pairs.sort((a, b) {
+        if (a.value.toggled == b.value.toggled) {
+          // Keep original order for stability
+          return a.index.compareTo(b.index);
+        }
+        // false < true when uncheckedFirst; reversed otherwise
+        final aRank = a.value.toggled ? 1 : 0;
+        final bRank = b.value.toggled ? 1 : 0;
+        final delta = aRank - bRank;
+        return uncheckedFirst ? delta : -delta;
+      });
+
+      keys
+        ..clear()
+        ..addAll(pairs.map((p) => p.key));
+      values
+        ..clear()
+        ..addAll(pairs.map((p) => p.value));
+    });
+
+    widget.onChanged(values);
+  }
+
+  // Controller API: unfocus editors and re-emit current values.
+  void _saveUnsubmitted() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Checklist.keepKeyboardFocusNode.unfocus();
+    widget.onChanged(values);
+  }
+
   @override
   Widget build(BuildContext context) {
     // Changing the duration is buggy in debug mode
     final duration = kReleaseMode ? Duration(milliseconds: 150) : null;
 
     // Use the custom user localizations, or else those for the current locale, or else those in english
-    final localizations = widget.localizations ?? ChecklistLocalizations.of(context) ?? ChecklistLocalizationsEn();
+    final localizations = widget.localizations ??
+        ChecklistLocalizations.of(context) ??
+        ChecklistLocalizationsEn();
 
     return widget.enabled
         ? ListView(

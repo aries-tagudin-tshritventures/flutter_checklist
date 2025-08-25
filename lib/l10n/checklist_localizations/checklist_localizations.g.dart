@@ -63,13 +63,15 @@ import 'checklist_localizations_fr.g.dart';
 /// property.
 abstract class ChecklistLocalizations {
   ChecklistLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
   static ChecklistLocalizations? of(BuildContext context) {
     return Localizations.of<ChecklistLocalizations>(
-        context, ChecklistLocalizations);
+      context,
+      ChecklistLocalizations,
+    );
   }
 
   static const LocalizationsDelegate<ChecklistLocalizations> delegate =
@@ -87,16 +89,16 @@ abstract class ChecklistLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('fr')
+    Locale('fr'),
   ];
 
   /// New entry button at the bottom of the checklist.
@@ -119,7 +121,8 @@ class _ChecklistLocalizationsDelegate
   @override
   Future<ChecklistLocalizations> load(Locale locale) {
     return SynchronousFuture<ChecklistLocalizations>(
-        lookupChecklistLocalizations(locale));
+      lookupChecklistLocalizations(locale),
+    );
   }
 
   @override
@@ -140,8 +143,9 @@ ChecklistLocalizations lookupChecklistLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'ChecklistLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'ChecklistLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }
