@@ -108,6 +108,7 @@ class _ItemTileState extends State<ItemTile> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final bodyLarge = Theme.of(context).textTheme.bodyLarge;
     final subduedColor = bodyLarge?.color?.subdued;
     final bodyLargeLineThrough = bodyLarge?.copyWith(
@@ -122,14 +123,24 @@ class _ItemTileState extends State<ItemTile> {
         child: ValueListenableBuilder(
             valueListenable: draggedItemKeyNotifier,
             builder: (context, draggedItemKey, child) {
-              final tileColor = draggedItemKey == widget.key
-                  ? Theme.of(context).colorScheme.surfaceContainerHigh
-                  : null;
+              final tileColor = colorScheme.surfaceContainerHigh;
 
               return ListTile(
                 tileColor: tileColor,
                 leading: Checkbox(
                   value: toggled,
+                  activeColor: colorScheme.tertiary,
+                  checkColor: colorScheme.onTertiary,
+                  fillColor: WidgetStateColor.resolveWith((states) {
+                    if (states.contains(WidgetState.selected) ||
+                        states.contains(WidgetState.focused)) {
+                      return colorScheme.tertiary;
+                    }
+                    return colorScheme.secondary;
+                  }),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   visualDensity: VisualDensity.compact,
                   onChanged: widget.enabled ? onToggled : null,
                 ),
@@ -173,7 +184,7 @@ class _ItemTileState extends State<ItemTile> {
                   ],
                 ),
                 visualDensity: VisualDensity.compact,
-                contentPadding: EdgeInsets.only(left: 16, right: 8),
+                contentPadding: EdgeInsets.only(left: 6, right: 6),
               );
             }),
       ),
