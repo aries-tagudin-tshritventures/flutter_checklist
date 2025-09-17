@@ -123,7 +123,7 @@ class _ItemTileState extends State<ItemTile> {
         child: ValueListenableBuilder(
             valueListenable: draggedItemKeyNotifier,
             builder: (context, draggedItemKey, child) {
-              final tileColor = colorScheme.surfaceContainerHigh;
+              final tileColor = colorScheme.secondary;
 
               return ListTile(
                 tileColor: tileColor,
@@ -184,7 +184,7 @@ class _ItemTileState extends State<ItemTile> {
                   ],
                 ),
                 visualDensity: VisualDensity.compact,
-                contentPadding: EdgeInsets.only(left: 6, right: 6),
+                contentPadding: EdgeInsets.only(left: 0, right: 6),
               );
             }),
       ),
