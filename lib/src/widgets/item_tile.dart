@@ -165,6 +165,7 @@ class _ItemTileState extends State<ItemTile> {
                         textCapitalization: TextCapitalization.sentences,
                         maxLines: 1,
                         style: toggled ? bodyLargeLineThrough : bodyLarge,
+                        cursorColor: colorScheme.tertiary,
                         decoration: InputDecoration.collapsed(
                           hintText: widget.localizations.hint_entry,
                         ),
