@@ -171,6 +171,9 @@ class _ItemTileState extends State<ItemTile> {
                         ),
                         onChanged: onChanged,
                         onSubmitted: onSubmitted,
+                        onTapOutside: (PointerDownEvent event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                       );
                     }),
                 trailing: Row(
